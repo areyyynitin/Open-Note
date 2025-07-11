@@ -9,10 +9,16 @@ import { random } from "./util";
 import cors from "cors";
 dotenv.config();
 
+
 const app: Express = express();
 app.use(express.json());
 app.use(cors());
 const port = process.env.PORT;
+app.use(cors({
+  origin: "https://open-note-frontend.onrender.com", 
+  credentials: true
+}));
+
 
 if (!process.env.MONGO_URI) {
   throw new Error("MONGO_URI environment variable is not defined");
