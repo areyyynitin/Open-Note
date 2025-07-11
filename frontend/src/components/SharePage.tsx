@@ -4,10 +4,18 @@ import axios from "axios";
 import { Card } from "../components/Card";
 import BACKEND_URL from "../config";
 
+
+type ContentItem = {
+  _id: string;
+  title: string;
+  link: string;
+  type: "twitter" | "youtube";
+};
+
 const SharePage = () => {
   const { hash } = useParams();
   const [username, setUsername] = useState("");
-  const [content, setContent] = useState([]);
+  const [content, setContent] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -15,7 +23,7 @@ const SharePage = () => {
     try {
       const res = await axios.get(`${BACKEND_URL}/api/v1/brain/${hash}`);
       setUsername(res.data.username);
-      setContent(res.data.content);
+      setContent(res.data.content); 
       setLoading(false);
     } catch (error) {
       setNotFound(true);

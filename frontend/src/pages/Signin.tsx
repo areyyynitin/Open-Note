@@ -8,8 +8,8 @@ import { EyeOpen } from '../icons/EyeOpen';
 import { EyeClose } from '../icons/EyeClose';
 
 export const SignIn = () => {
-  const usernameRef = useRef<HTMLInputElement>();
-  const passwordRef = useRef<HTMLInputElement>();
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();

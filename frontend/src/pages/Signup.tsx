@@ -8,8 +8,8 @@ import { EyeOpen } from '../icons/EyeOpen';
 import { AuthInput } from '../components/AuthInput';
 
 export const Signup = () => {
-  const usernameRef = useRef<HTMLInputElement>();
-  const passwordRef = useRef<HTMLInputElement>();
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ export const Signup = () => {
     const password = passwordRef.current?.value;
 
     try {
-      const res = await axios.post(BACKEND_URL + "/api/v1/brain/signup", {
+      await axios.post(BACKEND_URL + "/api/v1/brain/signup", {
         username,
         password
       });
@@ -65,7 +65,7 @@ export const Signup = () => {
       </div>
     </div>
 
-    {/* ✅ Error message below white box */}
+    
     {errorMsg && (
       <div className="text-red-500 text-sm mt-3 text-center font-medium animate-pulse">
         {errorMsg}
