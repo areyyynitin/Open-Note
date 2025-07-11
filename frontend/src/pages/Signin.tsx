@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { Button } from '../components/Buttons';
 import { AuthInput } from '../components/AuthInput';
 import BACKEND_URL from '../config';
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError } from "axios";
 import { useNavigate } from 'react-router-dom';
 import { EyeOpen } from '../icons/EyeOpen';
 import { EyeClose } from '../icons/EyeClose';

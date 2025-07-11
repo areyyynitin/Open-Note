@@ -8,7 +8,7 @@
     "skipLibCheck": true,
    
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": false,
     "moduleDetection": "force",
@@ -21,7 +21,9 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": false,
     "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
     "noUncheckedSideEffectImports": true
   },
   "include": ["src", "src/config.ts"]
 }
+
