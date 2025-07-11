@@ -2,10 +2,15 @@ import { useRef, useState } from 'react';
 import { Button } from '../components/Buttons';
 import { AuthInput } from '../components/AuthInput';
 import BACKEND_URL from '../config';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { EyeOpen } from '../icons/EyeOpen';
 import { EyeClose } from '../icons/EyeClose';
+
+// ✅ Define expected response shape
+type SigninResponse = {
+  message: string; // assuming this contains the JWT
+};
 
 export const SignIn = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -19,10 +24,15 @@ export const SignIn = () => {
       const username = usernameRef.current?.value;
       const password = passwordRef.current?.value;
 
-      const response = await axios.post(BACKEND_URL + "/api/v1/brain/signin", {
-        username,
-        password,
-      });
+      if (!username || !password) {
+        setErrorMsg("Please fill in both fields.");
+        return;
+      }
+
+      const response = await axios.post<SigninResponse>(
+        BACKEND_URL + "/api/v1/brain/signin",
+        { username, password }
+      );
 
       const jwt = response.data.message;
       if (!jwt) {
@@ -32,12 +42,15 @@ export const SignIn = () => {
 
       localStorage.setItem("token", jwt);
       navigate("/dashboard");
-    } catch (error: any) {
-      if (error.response?.status === 401 || error.response?.status === 403) {
-        const message = error.response?.data?.message;
-        if (message?.toLowerCase().includes("username")) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      const status = error.response?.status;
+      const message = error.response?.data?.message || "";
+
+      if (status === 401 || status === 403) {
+        if (message.toLowerCase().includes("username")) {
           setErrorMsg("Invalid username. Please try again.");
-        } else if (message?.toLowerCase().includes("password")) {
+        } else if (message.toLowerCase().includes("password")) {
           setErrorMsg("Incorrect password. Please try again.");
         } else {
           setErrorMsg("Invalid credentials.");
@@ -79,7 +92,6 @@ export const SignIn = () => {
         </div>
       </div>
 
-      {/* Error message below white box */}
       {errorMsg && (
         <div className="text-red-500 text-sm mt-3 text-center font-medium animate-pulse">
           {errorMsg}

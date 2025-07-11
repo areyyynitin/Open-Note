@@ -17,10 +17,18 @@ type ContentItem = {
   type: "twitter" | "youtube";
 };
 
+// ✅ Type for share API response
+type ShareResponse = {
+  hash?: string;
+};
+
 const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [filterType, setFilterType] = useState<"twitter" | "youtube" | "all">("all");
-  const { contents, refresh } = useContent() as { contents: ContentItem[]; refresh: () => void };
+  const { contents, refresh } = useContent() as {
+    contents: ContentItem[];
+    refresh: () => void;
+  };
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
@@ -42,11 +50,13 @@ const Dashboard = () => {
   };
 
   const filteredContents =
-    filterType === "all" ? contents : contents.filter((item) => item.type === filterType);
+    filterType === "all"
+      ? contents
+      : contents.filter((item) => item.type === filterType);
 
   const handleShareNotes = async () => {
     try {
-      const response = await axios.post(
+      const response = await axios.post<ShareResponse>(
         `${BACKEND_URL}/api/v1/brain/share`,
         { share: true },
         {
@@ -58,7 +68,6 @@ const Dashboard = () => {
 
       if (response.data.hash) {
         const shareUrl = `${window.location.origin}/share/${response.data.hash}`;
-
         await navigator.clipboard.writeText(shareUrl);
         setAlertMessage("Link copied to clipboard!");
       } else {

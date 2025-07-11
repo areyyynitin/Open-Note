@@ -4,12 +4,18 @@ import axios from "axios";
 import { Card } from "../components/Card";
 import BACKEND_URL from "../config";
 
-
+// ✅ Define the shape of a content item
 type ContentItem = {
   _id: string;
   title: string;
   link: string;
   type: "twitter" | "youtube";
+};
+
+// ✅ Define the shape of the entire response
+type ShareResponse = {
+  username: string;
+  content: ContentItem[];
 };
 
 const SharePage = () => {
@@ -21,9 +27,9 @@ const SharePage = () => {
 
   const fetchSharedBrain = async () => {
     try {
-      const res = await axios.get(`${BACKEND_URL}/api/v1/brain/${hash}`);
+      const res = await axios.get<ShareResponse>(`${BACKEND_URL}/api/v1/brain/${hash}`);
       setUsername(res.data.username);
-      setContent(res.data.content); 
+      setContent(res.data.content);
       setLoading(false);
     } catch (error) {
       setNotFound(true);
@@ -66,10 +72,7 @@ const SharePage = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-left">
-        {username}/notes
-      </h1>
-
+      <h1 className="text-3xl font-bold mb-6 text-left">{username}/notes</h1>
       <div className="flex flex-wrap gap-4 justify-start">
         {content.map((item) => (
           <Card
