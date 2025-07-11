@@ -2,10 +2,10 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-import { ContentModel, LinkModel, UserModel } from "./src/models/database";
-import { JWT_PASSWORD } from "./src/config";
-import { UserMiddleware } from "./src/middleware";
-import { random } from "./src/util";
+import { ContentModel, LinkModel, UserModel } from "./models/database";
+import { JWT_PASSWORD } from "./config";
+import { UserMiddleware } from "./middleware";
+import { random } from "./util";
 import cors from "cors";
 dotenv.config();
 
